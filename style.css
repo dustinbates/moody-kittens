@@ -48,7 +48,8 @@ img{
 }
 
 .catImg{
-  width: 80%;
+  width: 200px;
+  height: 200px;
 }
 
 form{
@@ -124,6 +125,7 @@ button.btn-special:hover{
 .card{
   background-color: var(--dark-lighten);
   padding: 1em;
+  margin-bottom: 1em;
   box-shadow: var(--shadow);
   border-radius: var(--corners);
 }
