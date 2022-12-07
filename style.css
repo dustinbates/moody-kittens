@@ -135,23 +135,33 @@ button.btn-special:hover{
 }
 
 
-.kitten img{
+.kitten-img{
   filter: drop-shadow(2px 4px 6px #1b1b1b);
   transition: all .35s ease;
+  width: 200px;
+  height: 200px;
 }
-.kitten.happy img{
+.kitten-happy-img{
   filter: drop-shadow(2px 4px 6px #00ffb3);
+  width: 200px;
+  height: 200px;
 }
-.kitten.tolerant img{
-  filter: drop-shadow(2px 4px 6px #646464);
+.kitten-tolerant-img{
+  filter: drop-shadow(2px 4px 6px hsl(224, 79%, 60%));
+  width: 200px;
+  height: 200px;
 }
-.kitten.angry img{
+.kitten-angry-img{
   filter: drop-shadow(2px 4px 6px #ff0000) contrast(1);
+  width: 200px;
+  height: 200px;
 }
-.kitten.gone img{
+.kitten-gone-img{
   filter: drop-shadow(2px 4px 6px #ff0000) contrast(0);
+  width: 100px;
+  height: 100px;
 }
-.kitten.gone{
+.kitten-gone{
   color: var(--danger);
   pointer-events: none;
 }

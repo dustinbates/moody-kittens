@@ -1,4 +1,7 @@
 let kittens = []
+let mood = ""
+let affections = 5
+
 loadKittens()
 drawKittens()
 console.log(kittens)
@@ -14,16 +17,23 @@ function addKitten(event) {
   event.preventDefault()
   let form = event.target
 
+  
   let newKitten = {
     id: generateId(),
     name: form.name.value,
-    mood: 'neutral',
-    affections: 10,
+    mood: "tolerant",
+    affections: 5,
+    class: "kitten-img"
   }
+  
+  if(form.name.value == ""){
+    alert("You must enter a name!")
+  } 
+  
+  
+  let sameName = kittens.find(cat => cat.name == form.name.value)
 
-  let findCat = kittens.find(cat => cat.name == form.name.value)
-
-  if(!findCat){
+  if(!sameName){
     kittens.push(newKitten)
     saveKittens()
     drawKittens()
@@ -34,10 +44,9 @@ function addKitten(event) {
 
 
 function deleteKitten(id) {
-  console.log({kittens: kittens, id: id});
-
+  // console.log({kittens: kittens, id: id});
   let r = kittens.indexOf(findKittenById(id))
-  console.log(r);
+  // console.log(r);
   kittens.splice(r, 1)
   saveKittens()
   drawKittens()
@@ -49,6 +58,7 @@ function deleteKitten(id) {
  */
 function saveKittens() {
   window.localStorage.setItem("kittens", JSON.stringify(kittens))
+  drawKittens()
 }
 
 /**
@@ -74,21 +84,23 @@ function drawKittens() {
       <div class="card text-center">
         <h3 class="text-light">${kitten.name}</h3>
 
-          <div><img class="catImg" src="https://thiscatdoesnotexist.com/" alt="">
+          <div><img id="kittenImg" class="${kitten.class}" src="https://thiscatdoesnotexist.com/" alt="">
           </div>
 
           <p class="text-light text-left">Mood: ${kitten.mood}</p>
           <p class="text-light text-left">Affections: ${kitten.affections}</p>
 
           <div class="d-flex space-between">
-          <button>Pet</button>
-          <button>Catnip</button>
-          <button onClick="deleteKitten('${kitten.id}')">Delete</button>
+          <button onClick="pet('${kitten.id}')">Pet</button>
+          <button onClick="catnip('${kitten.id}')">Catnip</button>
+          <button onClick="deleteKitten('${kitten.id}')">Release</button>
     </div>
 
   </div>
     `
   })
+
+
   kittensElement.innerHTML = kittensTemplate
 }
 
@@ -113,6 +125,18 @@ function findKittenById(id) {
  * @param {string} id 
  */
 function pet(id) {
+  // console.log(findKittenById(id));
+  let thisKitten = findKittenById(id)
+  let randomNumber = Math.random()
+  if (randomNumber > .5){
+    thisKitten.affections ++;
+    setKittenMood(thisKitten)
+    saveKittens()
+  } else {
+    thisKitten.affections --;
+    setKittenMood(thisKitten)
+    saveKittens()
+  }
 }
 
 /**
@@ -122,6 +146,13 @@ function pet(id) {
  * @param {string} id
  */
 function catnip(id) {
+  // console.log(findKittenById(id));
+  let thisKitten = findKittenById(id)
+  // thisKitten.mood = "Tolerant"
+  thisKitten.affections += 3;
+  setKittenMood(thisKitten)
+  saveKittens()
+
 }
 
 /**
@@ -129,6 +160,28 @@ function catnip(id) {
  * @param {Kitten} kitten 
  */
 function setKittenMood(kitten) {
+  document.getElementById("kittens").classList.remove(kitten.mood)
+ 
+  if(kitten.affections >= 6){
+    document.getElementById("kittenImg").classList.remove(kitten.class)
+    kitten.mood = "Happy"
+    kitten.class = "kitten-happy-img"
+  } 
+  if(kitten.affections <= 5){
+    document.getElementById("kittenImg").classList.remove(kitten.class)
+    kitten.mood = "Tolerant"
+    kitten.class = "kitten-tolerant-img"
+  }
+  if(kitten.affections <= 3){
+    document.getElementById("kittenImg").classList.remove(kitten.class)
+    kitten.mood = "Angry"
+    kitten.class = "kitten-angry-img"
+  }
+  if(kitten.affections <= 0){
+    document.getElementById("kittenImg").classList.remove(kitten.class)
+    kitten.mood = "gone"
+    kitten.class = "kitten-gone-img"
+  }
   
 }
 
@@ -146,6 +199,9 @@ function clearKittens(){
 function getStarted() {
   document.getElementById("welcome").remove();
   console.log('Good Luck, Take it away')
+  document.getElementById("kittens").classList.remove("hidden")
+  loadKittens()
+  drawKittens()
 }
 
 
